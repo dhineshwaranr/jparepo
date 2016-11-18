@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jparepo.pojo.ProjectEntity;
+import com.jparepo.pojo.RoleEntity;
 import com.jparepo.pojo.TeamEntity;
 import com.jparepo.pojo.UserEntity;
 import com.jparepo.repo.ProjectRepoImple;
+import com.jparepo.repo.RoleRepoImple;
 import com.jparepo.repo.TeamRepoImple;
 import com.jparepo.repo.UserRepoImple;
 
@@ -31,6 +33,9 @@ public class HomeController {
 	
 	@Autowired
 	private ProjectRepoImple projectRepo;
+	
+	@Autowired
+	private RoleRepoImple roleRepo;
 	
 	@RequestMapping(value="/getUsers/{userId}",method=RequestMethod.GET)
 	@ResponseBody
@@ -87,7 +92,7 @@ public class HomeController {
 		return "Success";
 	}
 	
-	@RequestMapping(value="/addUser",method=RequestMethod.POST)
+	@RequestMapping(value="/user",method=RequestMethod.POST)
 	@ResponseBody
 	public String addUser(@ModelAttribute UserEntity user){
 		System.out.println(user.getName());
@@ -100,5 +105,52 @@ public class HomeController {
 		
 		return "Success";
 	}
+	
+	@RequestMapping(value="/user",method=RequestMethod.GET)
+	@ResponseBody
+	public String getAllUser(){
+		try{
+			List<UserEntity> user = userRepo.findAll();
+			System.out.println(user.size());
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		
+		return "Success";
+	}
+	
+	@RequestMapping(value="/project",method=RequestMethod.POST)
+	@ResponseBody
+	public String addProject(@ModelAttribute ProjectEntity project){
+		try{
+			projectRepo.save(project);
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		return "Success";
+	}
+	
+	@RequestMapping(value="/role",method=RequestMethod.POST)
+	@ResponseBody
+	public String addRole(@ModelAttribute RoleEntity role){
+		try{
+			roleRepo.save(role);
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		return "Success";
+	}
+	
+	@RequestMapping(value="/role",method=RequestMethod.GET)
+	@ResponseBody
+	public String getAllRole(){
+		try{
+			//roleRepo.save(role);
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		return "Success";
+	}
+	
 
 }

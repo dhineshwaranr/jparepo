@@ -3,6 +3,7 @@ package com.jparepo.pojo;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,6 +18,7 @@ public class TeamEntity {
 	
 	@Id
 	@GeneratedValue
+	@Column(name="teamId")
 	private int id;
 	
 	private String teamName;
@@ -26,6 +28,8 @@ public class TeamEntity {
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<ProjectEntity> projects;
+
+	
 
 	public int getId() {
 		return id;
