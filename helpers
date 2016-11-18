@@ -1,0 +1,5 @@
+Default Fetch Type:
+OneToMany: LAZY
+ManyToOne: EAGER
+ManyToMany: LAZY
+OneToOne: EAGER
