@@ -111,7 +111,12 @@ public class HomeController {
 	public String getAllUser(){
 		try{
 			List<UserEntity> user = userRepo.findAll();
-			System.out.println(user.size());
+			for(UserEntity u : user){
+				System.out.println(u.getName());
+				System.out.println(u.getRole().getRoleName());
+				System.out.println("<---->");
+			}
+
 		}catch(Exception e){
 			System.out.println(e);
 		}
@@ -145,7 +150,15 @@ public class HomeController {
 	@ResponseBody
 	public String getAllRole(){
 		try{
-			//roleRepo.save(role);
+			List<RoleEntity> roles = roleRepo.findAll();
+			for(RoleEntity r : roles){
+				System.out.println(r.getRoleName());
+				for(UserEntity u:r.getUser()){
+					System.out.println(u.getName());
+				}
+				System.out.println("<==========>");
+			}
+			
 		}catch(Exception e){
 			System.out.println(e);
 		}
