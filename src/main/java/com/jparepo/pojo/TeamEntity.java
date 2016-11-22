@@ -1,5 +1,6 @@
 package com.jparepo.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,9 +12,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.jparepo.jsonview.Views;
+
 @Entity
 @Table(name="team")
-public class TeamEntity {
+public class TeamEntity implements Serializable{
 	
 	@Id
 	@GeneratedValue
@@ -21,6 +26,7 @@ public class TeamEntity {
 	
 	private String teamName;
 	
+	@JsonBackReference
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "team")
 	private List<UserEntity> users;
 	

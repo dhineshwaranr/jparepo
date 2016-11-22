@@ -1,5 +1,6 @@
 package com.jparepo.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,9 +12,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.jparepo.jsonview.Views;
+
 @Entity
 @Table(name="user")
-public class UserEntity {
+public class UserEntity implements Serializable{
 
 	@Id
 	@GeneratedValue
@@ -21,9 +26,11 @@ public class UserEntity {
 	
 	private String name;
 	
+	@JsonManagedReference
 	@ManyToOne(cascade = CascadeType.ALL)
 	private TeamEntity team;
 	
+	@JsonManagedReference
 	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private List<ProjectEntity> projects;
 	
