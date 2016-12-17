@@ -30,7 +30,7 @@ public class TeamEntity implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "team")
 	private List<UserEntity> users;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<ProjectEntity> projects;
 
 	public int getId() {

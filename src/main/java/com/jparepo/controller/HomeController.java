@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.hibernate.engine.jdbc.connections.internal.UserSuppliedConnectionProviderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,6 @@ import com.jparepo.repo.ProjectRepoImple;
 import com.jparepo.repo.TeamRepoImple;
 import com.jparepo.repo.UserRepoImple;
 
-
 @Controller
 public class HomeController {
 
@@ -39,6 +39,8 @@ public class HomeController {
 	
 	@Autowired
 	private ProjectRepoImple projectRepo;
+	
+	private static Logger log = Logger.getLogger(HomeController.class);
 	
 	@RequestMapping(value="/getUsers/{userId}",method=RequestMethod.GET)
 	@ResponseBody
@@ -55,14 +57,11 @@ public class HomeController {
 	
 	@RequestMapping(value="/getTeam/{teamId}",method=RequestMethod.GET)
 	@ResponseBody
-	public String getTeam(@PathVariable(value="teamId") String teamId){
-		System.out.println("user: " +teamId);
-		TeamEntity team = teamRepo.findById(Integer.parseInt(teamId));
-		System.out.println(team.getTeamName());
-		for(UserEntity ue : team.getUsers()){
-			System.out.println(ue.getName());
-		}
-		return "Success";
+	public List<TeamDTO> getTeam(@PathVariable(value="teamId") String teamId){
+		List<TeamDTO> teamDto = null;
+		List<TeamEntity> teamentity = teamRepo.findById(Integer.parseInt(teamId));
+		teamDto = generateTeamList(teamentity);
+		return teamDto;
 	}
 	
 	@RequestMapping(value="/getProject/{projectId}",method=RequestMethod.GET)
@@ -99,13 +98,11 @@ public class HomeController {
 	@RequestMapping(value="/user",method=RequestMethod.POST)
 	@ResponseBody
 	public String addUser(@ModelAttribute UserEntity user){
-		System.out.println(user.getName());
-		//UserEntity user = new UserEntity();
 		try{
 			UserEntity userentity = userRepo.save(user);
 			System.out.println(userentity);
 		}catch(Exception e){
-			System.out.println(e);
+			log.error(e.getMessage());
 		}
 		return "Success";
 	}
@@ -119,7 +116,7 @@ public class HomeController {
 			userentity = userRepo.findAll();
 			userDto = generateUserList(userentity);
 		}catch(Exception e){
-			System.out.println(e);
+			log.error(e.getMessage());
 		}
 		return userDto;
 	}
@@ -133,9 +130,23 @@ public class HomeController {
 			teamentity = teamRepo.findAll();
 			teamDto = generateTeamList(teamentity);
 		}catch(Exception e){
-			System.out.println(e);
+			log.error(e.getMessage());
 		}
 		return teamDto;
+	}
+	
+	@RequestMapping(value="/project",method=RequestMethod.GET)
+	@ResponseBody
+	public List<ProjectDTO> readAllProjects(){
+		List<ProjectDTO> projectDto = null;
+		try{
+			List<ProjectEntity> projectentity = null;
+			projectentity = projectRepo.findAll();
+			projectDto = generateProjectList(projectentity);
+		}catch(Exception e){
+			log.error(e.getMessage());
+		}
+		return projectDto;
 	}
 	
 	public List<UserDTO> generateUserList(List<UserEntity> userentity){
@@ -186,6 +197,33 @@ public class HomeController {
 			teamDto.add(teamDtoObj);
 		}
 		return teamDto;
+	}
+	
+	public List<ProjectDTO> generateProjectList(List<ProjectEntity> projectentity){
+		List<ProjectDTO> projectDto = new ArrayList<ProjectDTO>();
+		for(ProjectEntity project : projectentity){
+			List<TeamDTO> teamDtoList = new ArrayList<TeamDTO>();
+			List<UserDTO> userDtoList = new ArrayList<UserDTO>();
+			ProjectDTO projectDtoObj = new ProjectDTO();
+			projectDtoObj.setProjectId(project.getId());
+			projectDtoObj.setProjectName(project.getProjectName());
+			for(TeamEntity team : project.getTeams()){
+				TeamDTO teamDto = new TeamDTO();
+				teamDto.setTeamId(team.getId());
+				teamDto.setTeamName(team.getTeamName());
+				teamDtoList.add(teamDto);
+			}
+			for(UserEntity user : project.getUsers()){
+				UserDTO userDto = new UserDTO();
+				userDto.setUserId(user.getId());
+				userDto.setUserName(user.getName());
+				userDtoList.add(userDto);
+			}
+			projectDtoObj.setTeam(teamDtoList);
+			projectDtoObj.setUser(userDtoList);
+			projectDto.add(projectDtoObj);
+		}
+		return projectDto;
 	}
 	
 }

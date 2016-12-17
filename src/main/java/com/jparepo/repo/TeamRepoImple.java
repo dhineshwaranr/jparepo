@@ -16,7 +16,7 @@ import com.jparepo.pojo.UserEntity;
 @Repository
 public interface TeamRepoImple extends JpaRepository<TeamEntity, Integer> {
 
-	public TeamEntity findById(int teamId);
+	public List<TeamEntity> findById(int teamId);
 	public TeamEntity findByProjects(ProjectEntity project);
 	public List<TeamEntity> findByUsersAndProjects(UserEntity user, ProjectEntity project);
 	

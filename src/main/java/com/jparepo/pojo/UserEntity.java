@@ -31,7 +31,7 @@ public class UserEntity implements Serializable{
 	private TeamEntity team;
 	
 	@JsonManagedReference
-	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	private List<ProjectEntity> projects;
 	
 	public int getId() {

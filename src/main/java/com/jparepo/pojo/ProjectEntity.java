@@ -25,7 +25,7 @@ public class ProjectEntity implements Serializable{
 	private int id;
 	private String projectName;
 		
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "projects")
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "projects")
 	private List<TeamEntity> teams;
 	
 	@JsonBackReference

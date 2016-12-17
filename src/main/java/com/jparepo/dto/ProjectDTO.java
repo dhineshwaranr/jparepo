@@ -9,8 +9,8 @@ public class ProjectDTO {
 
 	public int projectId;
 	public String projectName;
-	public List<UserEntity> user;
-	public List<TeamEntity> team;
+	public List<UserDTO> user;
+	public List<TeamDTO> team;
 	
 	public int getProjectId() {
 		return projectId;
@@ -24,16 +24,16 @@ public class ProjectDTO {
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
-	public List<UserEntity> getUser() {
+	public List<UserDTO> getUser() {
 		return user;
 	}
-	public void setUser(List<UserEntity> user) {
+	public void setUser(List<UserDTO> user) {
 		this.user = user;
 	}
-	public List<TeamEntity> getTeam() {
+	public List<TeamDTO> getTeam() {
 		return team;
 	}
-	public void setTeam(List<TeamEntity> team) {
+	public void setTeam(List<TeamDTO> team) {
 		this.team = team;
 	}
 	
